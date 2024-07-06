@@ -1,46 +1,65 @@
 import express from "express"; 
 import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
+import { Ticket } from "./dtb_models/ticketModel.js";
 
 
 const app = express();
  //make it listen to a port, separate your code to different files and folders
+
+//middleware for parsing request body 
+app.use(express.json());
 
 app.get('/', (request, response)=> {
     console.log(response)
     return response.status(200).send('welcome to MERN ')
 });
 
-//Route for save a new ticket
+//Route for save/post/send a new ticket to server/dtb
 //bcs working with mongoose is an asynchronous process we use async 
 //our callback functions
-app.post('tickets', async (res, req)=> {
+app.post('/tickets', async (request, response)=> {
     try{
         if(
-            !res.body.name ||
-            !res.body.departure ||
-            !res.body.arrival ||
-            !res.body.class
+            !request.body.name ||
+            !request.body.departure ||
+            !request.body.arrival ||
+            !request.body.class
         ){
-            return res.status(400).send({
+            return response.status(400).send({
                 messgae: "pls send all required data fields",
             });
         }
         const newTicket = {
-            name: res.body.name, 
-            departure: res.body.departure, 
-            arrival: res.body.arrival, 
-            class: res.body.class, 
+            name: request.body.name, 
+            departure: request.body.departure, 
+            arrival: request.body.arrival, 
+            class: request.body.class, 
         };
+        const ticket = await Ticket.create(newTicket);
 
-        const ticket = await Book.create(newBook);
+        return response.status(201).send(ticket);
     }catch(error){
         console.log(error.message); 
-        res.status(500).send({message: error.message});
+        response.status(500).send({message: error.message});
     }
 });
 
-//to connect database d
+//route to GET ALL bookS from dtb 
+app.get('/tickets', async (request, response)=>{
+    try {
+        const tickets = await Ticket.find({});
+        return response.status(200).json({
+            count: tickets.length,
+            data: tickets
+        })
+    } catch (error){
+        console.log(error.message); 
+        response.status(500).send({ message: error.message});
+    }
+}); 
+
+//to connect database 
 mongoose
     .connect(mongoDBURL)
     .then(()=>{
