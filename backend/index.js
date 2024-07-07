@@ -45,19 +45,57 @@ app.post('/tickets', async (request, response)=> {
     }
 });
 
-//route to GET ALL bookS from dtb 
-app.get('/tickets', async (request, response)=>{
+// //route to GET ALL bookS from dtb 
+// app.get('/tickets', async (request, response)=>{
+//     try {
+//         const tickets = await Ticket.find({});
+//         return response.status(200).json({
+//             count: tickets.length,
+//             data: tickets
+//         })
+//     } catch (error){
+//         console.log(error.message); 
+//         response.status(500).send({ message: error.message});
+//     }
+// }); 
+
+
+//route to GET ONE tickets from dtb BY ID
+app.get('/tickets/:id', async (request, response)=>{ //the /:id required to place id when search in postman
     try {
-        const tickets = await Ticket.find({});
-        return response.status(200).json({
-            count: tickets.length,
-            data: tickets
-        })
+        const { id } = request.params; //to extract the id parameter from the request.params object.
+
+        const tickets = await Ticket.findById(id);
+        return response.status(200).json(tickets);
     } catch (error){
         console.log(error.message); 
         response.status(500).send({ message: error.message});
     }
 }); 
+
+// Route to GET ONE ticket by NAME  
+//params is parameter which is what you include in your request 
+//query is your fields which is what you type in the query params with key is name and value is "place-here-the-name"
+app.get('/tickets', async (request, response) => {
+    try {
+        const { name } = request.query;
+
+        if (!name) {
+            return response.status(400).send({ message: 'Name query parameter is required' });
+        }
+
+        const ticket = await Ticket.findOne({ name });
+        if (!ticket) {
+            return response.status(404).send({ message: 'Ticket not found' });
+        }
+
+        return response.status(200).json(ticket);
+    } catch (error) {
+        console.log(error.message);
+        response.status(500).send({ message: error.message });
+    }
+});
+
 
 //to connect database 
 mongoose
