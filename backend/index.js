@@ -3,14 +3,19 @@ import { PORT, mongoDBURL } from "./config.js";
 import mongoose from "mongoose";
 import { Ticket } from "./dtb_models/ticketModel.js";
 import ticketsRoute from './routes/ticketsRoute.js';
+import cors from 'cors';
 
 const app = express();
- //make it listen to a port, separate your code to different files and folders
 
 
  
 //middleware for parsing request body 
 app.use(express.json());
+
+
+//middleware for handling CORS POLICY 
+app.use(cors()); //allow every methods: get put post delete
+
 
 app.get('/', (request, response)=> {
     console.log(request)
