@@ -1,0 +1,86 @@
+
+.navbar {
+  margin-top: 2px;
+  margin-left: 10%;
+  margin-right: 5%;
+  padding: 2%;
+  display: grid; 
+  grid-template-columns: 1fr 3fr ;
+  grid-template-rows: 1fr;
+  background-color: #ffff;
+  box-shadow: 3px 10px 5px blue ;
+  max-width: 100%;
+}
+
+.navbar h1{
+  font-size: 30px;
+  color: rgb(11, 88, 231);
+  margin: 0;
+  grid-column: 1/2;
+}
+
+.navbar .links{
+  grid-column: 2/3;
+  display: grid; 
+  grid-template-columns: 3fr 1fr;
+  grid-template-rows: repeat(4,25%); 
+}
+
+#root > div > nav > div > div.center{
+  grid-row: 1/5;
+  display: flex;
+  flex-direction: row;
+
+}
+
+div.center div, div.center a{
+  padding: 20px;
+}
+
+
+
+#root > div > nav > div > div.dangky_dangnhap{
+  grid-column: 2/3;
+  grid-row: 2/5;
+ 
+}
+
+div.dangky_dangnhap a{
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+
+.navbar a{
+  color:rgb(6, 13, 234);
+  text-decoration: none;
+}
+
+.navbar a:hover{
+  color:rgb(3, 10, 57);
+  text-decoration: underline;
+}
+
+.navbar.dropdown {
+  position: relative;
+  display: inline-block;
+
+}
+
+.navbar .dropdown-content{
+  display: none;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  position: absolute;
+  z-index: 1;
+  
+}
+
+.navbar .dropdown-content a{
+  display: block;
+  padding: 0.3em; 
+  
+}
+
+.navbar .dropdown:hover .dropdown-content {
+  display: block;
+}
